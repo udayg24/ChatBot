@@ -7,8 +7,10 @@ environment:
   sdk: ">=3.4.3 <4.0.0"
 
 dependencies:
+  animate_do: ^3.3.4
   flutter:
     sdk: flutter
+  flutter_tts: ^4.0.2
   http: ^1.2.1
   speech_to_text: ^6.6.2
 
