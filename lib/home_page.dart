@@ -23,12 +23,29 @@ class _HomePageState extends State<HomePage> {
   String? generatedImageUrl;
   int start = 200;
   int delay = 200;
+  TextEditingController controller = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     initSpeechToText();
     initTextToSpeech();
+  }
+
+  void click() async {
+    FocusScope.of(context).unfocus();
+    final speech = await openAIService.isArtPromptAPI(controller.text);
+    if (speech.contains('https')) {
+      generatedImageUrl = speech;
+      generatedContent = null;
+      setState(() {});
+    } else {
+      generatedImageUrl = null;
+      generatedContent = speech;
+      setState(() {});
+      systemSpeak(speech);
+    }
+    controller.clear();
   }
 
   Future<void> initTextToSpeech() async {
@@ -66,6 +83,7 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
     speechToText.stop();
     flutterTts.stop();
+    controller.dispose();
   }
 
   @override
@@ -186,6 +204,21 @@ class _HomePageState extends State<HomePage> {
                       descriptionText:
                           "Get the best of both worlds with a voice assistant powered by Dall-E and ChatGPT",
                     ),
+                  ),
+                  TextField(
+                    controller: controller,
+                    decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.message),
+                        labelText: "Enter a prompt",
+                        border: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(width: 5, color: Colors.black)),
+                        suffixIcon: IconButton(
+                          onPressed: this.click,
+                          icon: Icon(Icons.send),
+                          splashColor: Colors.blue,
+                          tooltip: "Submit",
+                        )),
                   ),
                 ],
               ),
