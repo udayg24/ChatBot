@@ -1,3 +1,3 @@
-# chatbot
+# AI-Assistant
 
-A new Flutter project.
+Prompt ChatGPT or Dall-E with voice or text and get answers.
